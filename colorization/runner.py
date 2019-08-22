@@ -47,7 +47,7 @@ if __name__ == '__main__':
     (H_in, W_in) = net.blobs['data_l'].data.shape[2:]  # get input shape
     (H_out, W_out) = net.blobs['class8_ab'].data.shape[2:]  # get output shape
 
-    print("Input: " + H_in + ":" + W_in + " Out: " + H_out + ":" + W_out)
+    print("Input: %d:%d out: %d:%d" % (H_in, W_in, H_out, W_out))
 
     pts_in_hull = np.load('./resources/pts_in_hull.npy')  # load cluster centers
     net.params['class8_ab'][0].data[:, :, 0, 0] = pts_in_hull.transpose(
@@ -77,11 +77,11 @@ if __name__ == '__main__':
 
         ab_dec = net.blobs['class8_ab'].data[0, :, :, :].transpose((1, 2, 0))  # this is our result
         ab_dec_us = sni.zoom(ab_dec,
-                             (1. * H_orig / H_out, 1. * W_orig / W_out, 1))  # upsample to match size of original image L
+                             (
+                             1. * H_orig / H_out, 1. * W_orig / W_out, 1))  # upsample to match size of original image L
         img_lab_out = np.concatenate((img_l[:, :, np.newaxis], ab_dec_us), axis=2)  # concatenate with original image L
         img_rgb_out = (255 * np.clip(color.lab2rgb(img_lab_out), 0, 1)).astype('uint8')  # convert back to rgb
 
-        outpath=os.path.join(args.output, fname)
+        outpath = os.path.join(args.output, fname)
         print(fname)
         cv2.imwrite(outpath, cv2.cvtColor(img_rgb_out, cv2.COLOR_RGB2BGR))
-
