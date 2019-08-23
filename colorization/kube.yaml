@@ -26,7 +26,7 @@ spec:
             - python
             - "runner.py"
             - "--input"
-            - "/svlk/abush/colorize/png_6"
+            - "/svlk/abush/colorize/png/"
             - "--output"
             - "/svlk/abush/colorize/out/"
           resources:
